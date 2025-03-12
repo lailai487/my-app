@@ -1,0 +1,1 @@
+Laravel 12 + Livewire + Vite practice project
