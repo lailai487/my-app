@@ -57,4 +57,74 @@ class User extends Authenticatable
             ->map(fn (string $name) => Str::of($name)->substr(0, 1))
             ->implode('');
     }
+
+    // 加入以下方法
+    /**
+     * Get the user's profile.
+     */
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    /**
+     * Get the user's roles.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'roles_users')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the user's login activities.
+     */
+    public function loginActivities()
+    {
+        return $this->hasMany(LoginActivity::class);
+    }
+
+    /**
+     * Check if the user has a specific role.
+     *
+     * @param string|array $roles
+     * @return bool
+     */
+    public function hasRole($roles)
+    {
+        if (is_string($roles)) {
+            return $this->roles->contains('name', $roles);
+        }
+
+        return (bool) $this->roles->whereIn('name', $roles)->count();
+    }
+
+    /**
+     * Check if the user has a specific permission.
+     *
+     * @param string|array $permissions
+     * @return bool
+     */
+    public function hasPermission($permissions)
+    {
+        $userPermissions = $this->getAllPermissions();
+
+        if (is_string($permissions)) {
+            return $userPermissions->contains('name', $permissions);
+        }
+
+        return (bool) $userPermissions->whereIn('name', $permissions)->count();
+    }
+
+    /**
+     * Get all permissions for the user.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getAllPermissions()
+    {
+        return $this->roles->flatMap(function ($role) {
+            return $role->permissions;
+        })->unique('id');
+    }
 }
