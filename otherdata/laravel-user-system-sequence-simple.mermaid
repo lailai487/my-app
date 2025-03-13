@@ -1,0 +1,34 @@
+sequenceDiagram
+    participant C as Client
+    participant API as API Controller
+    participant AM as Auth Middleware
+    participant AS as Auth Service
+    participant U as User Model
+    participant R as Role Model
+    participant P as Permission Model
+    participant LA as Login Activity
+
+    C->>API: POST /api/auth/login
+    API->>AS: 調用登入服務
+    AS->>U: 驗證用戶憑證
+    U-->>AS: 返回用戶資料
+    AS->>R: 獲取用戶角色
+    R-->>AS: 返回角色資訊
+    AS->>P: 獲取角色權限
+    P-->>AS: 返回權限資訊
+    AS->>LA: 記錄登入活動
+    AS-->>API: 生成JWT令牌
+    API-->>C: 返回令牌和用戶資訊
+
+    Note over C,API: 已登入用戶訪問受保護資源
+
+    C->>API: GET /api/user/profile (帶JWT)
+    API->>AM: 驗證JWT令牌
+    AM->>AS: 檢查令牌有效性
+    AS->>U: 獲取用戶資訊
+    U-->>AS: 返回用戶資訊
+    AS->>P: 檢查權限
+    P-->>AS: 確認權限
+    AS-->>AM: 授權通過
+    AM-->>API: 處理請求
+    API-->>C: 返回用戶資料

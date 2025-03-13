@@ -1,0 +1,77 @@
+erDiagram
+    users ||--o{ user_profiles : has
+    users ||--o{ roles_users : has
+    roles ||--o{ roles_users : has
+    roles ||--o{ permissions_roles : has
+    permissions ||--o{ permissions_roles : has
+    users ||--o{ password_reset_tokens : has
+    users ||--o{ login_activities : performs
+    
+    users {
+        id bigint PK
+        name varchar
+        email varchar
+        email_verified_at timestamp
+        password varchar
+        remember_token varchar
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    user_profiles {
+        id bigint PK
+        user_id bigint FK
+        phone varchar
+        address text
+        birthday date
+        avatar varchar
+        gender varchar
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    roles {
+        id bigint PK
+        name varchar
+        description text
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    permissions {
+        id bigint PK
+        name varchar
+        description text
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    roles_users {
+        user_id bigint FK
+        role_id bigint FK
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    permissions_roles {
+        permission_id bigint FK
+        role_id bigint FK
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    password_reset_tokens {
+        email varchar PK
+        token varchar
+        created_at timestamp
+    }
+    
+    login_activities {
+        id bigint PK
+        user_id bigint FK
+        ip_address varchar
+        user_agent text
+        login_at timestamp
+        logout_at timestamp
+        status varchar
+    }
