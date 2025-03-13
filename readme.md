@@ -16,13 +16,13 @@ php artisan make:migration create_roles_table
 # 權限表 OK
 php artisan make:migration create_permissions_table
 
-# 角色用戶關聯表
+# 角色用戶關聯表 OK
 php artisan make:migration create_roles_users_table
 
-# 權限角色關聯表
+# 權限角色關聯表 OK
 php artisan make:migration create_permissions_roles_table
 
-# 登入活動記錄表
+# 登入活動記錄表 OK
 php artisan make:migration create_login_activities_table
 
 3. 修改migrations中，相關格式與內容
@@ -35,4 +35,22 @@ php artisan make:migration create_login_activities_table
  INFO  API scaffolding installed. Please add the [Laravel\Sanctum\HasApiTokens] trait to your User model.
 框架說明： https://livewire.laravel.com/docs/security#snapshot-checksums
 
+# 創建 Auth 相關的 Controller
+php artisan make:controller Api/Auth/RegisterController --invokable
+php artisan make:controller Api/Auth/LoginController --invokable
+php artisan make:controller Api/Auth/LogoutController --invokable
+php artisan make:controller Api/Auth/PasswordResetController
 
+6.2 加入TokenServiceProvider
+php artisan make:provider TokenServiceProvider
+
+-----以下尚未進行-----
+# 創建 User 相關的 Controller
+php artisan make:controller Api/User/ProfileController
+php artisan make:controller Api/User/AvatarController --invokable
+php artisan make:controller Api/User/PasswordController --invokable
+php artisan make:controller Api/User/LoginActivityController --invokable
+
+# 創建 Admin 相關的 Controller
+php artisan make:controller Api/Admin/UserController
+php artisan make:controller Api/Admin/RoleController
