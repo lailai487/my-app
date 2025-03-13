@@ -42,6 +42,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     <x-auth-session-status class="text-center" :status="session('status')" />
 
     <form wire:submit="register" class="flex flex-col gap-6">
+        <!-- livewire 不須使用@csrf 已由框架處理 -->
         <!-- Name -->
         <flux:input
             wire:model="name"

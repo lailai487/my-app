@@ -30,3 +30,9 @@ php artisan make:migration create_login_activities_table
 5. 執行指令 php artisan migrate
 
 6. 建立controller
+6.1. 安裝stateless API - php artisan install:api
+安裝結束後，說明如何應用
+ INFO  API scaffolding installed. Please add the [Laravel\Sanctum\HasApiTokens] trait to your User model.
+框架說明： https://livewire.laravel.com/docs/security#snapshot-checksums
+
+
