@@ -44,7 +44,12 @@ php artisan make:controller Api/Auth/PasswordResetController
 6.2 加入TokenServiceProvider
 php artisan make:provider TokenServiceProvider
 
+# 創建 Data 相關的 Controller
+6.3 建立以Token為驗證的控制器
+php artisan make:controller Api/Data/MigrationController --invokable
+
 -----以下尚未進行-----
+
 # 創建 User 相關的 Controller
 php artisan make:controller Api/User/ProfileController
 php artisan make:controller Api/User/AvatarController --invokable
@@ -54,3 +59,9 @@ php artisan make:controller Api/User/LoginActivityController --invokable
 # 創建 Admin 相關的 Controller
 php artisan make:controller Api/Admin/UserController
 php artisan make:controller Api/Admin/RoleController
+
+-----常用指令-----
+建完route, middleware, 或其他東西記得下
+php artisan config:clear
+php artisan route:clear
+php artisan optimize:clear

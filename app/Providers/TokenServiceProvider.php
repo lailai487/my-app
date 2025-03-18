@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\TokenGenerator;
+use App\Services\TokenUserGenerator;
 use Illuminate\Support\ServiceProvider;
 // use Laravel\Sanctum\NewAccessToken;
 // use App\Models\User;
@@ -16,7 +16,7 @@ class TokenServiceProvider extends ServiceProvider
     {
         // 註冊 token 生成服務
         $this->app->singleton('token.generator', function ($app) {
-            return new TokenGenerator();
+            return new TokenUserGenerator();
         });
         
         // 擴展 User 模型

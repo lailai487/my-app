@@ -6,10 +6,10 @@ use Laravel\Sanctum\NewAccessToken;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Str;
 
-class TokenGenerator
+class TokenDemoGenerator
 {
     /**
-     * 為用戶創建令牌
+     * 為用戶創建令牌，這裡的用法會在DB中創建tokenable_type，以利辨識，達到trait的效果
      *
      * @param User $user
      * @param string $name
