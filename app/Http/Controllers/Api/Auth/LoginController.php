@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\LoginActivity;
-use App\Services\Auth\AuthService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,13 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
-    protected $authService;
-
-    public function __construct(AuthService $authService)
-    {
-        $this->authService = $authService;
-    }
-
     /**
      * 處理用戶登入
      *
@@ -69,11 +61,11 @@ class LoginController extends Controller
         if (!($request->remember_me ?? false)) {
             $user->tokens()->delete();
         }
-        
-        // 生成新令牌
-        $tokenResult = $this->authService->createToken($user);
-        $token = $tokenResult->plainTextToken;
-        $expiresAt = $tokenResult->accessToken->expires_at ?? Carbon::now()->addHours(24);
+
+        // 使用依賴注入
+        $tokenGenerator = app('auth.service');
+        $token = $tokenGenerator->createToken($user);
+        $expiresAt = $token->accessToken->expires_at ?? Carbon::now()->addHours(24);
         
         // 記錄成功的登入活動
         LoginActivity::create([
@@ -84,9 +76,9 @@ class LoginController extends Controller
             'status' => 'success'
         ]);
         
-        // 獲取用戶的角色和權限
-        $roles = $user->roles->pluck('name');
-        $permissions = $user->getAllPermissions()->pluck('name');
+        // Todo:獲取用戶的角色和權限
+        // $roles = $user->roles->pluck('name');
+        // $permissions = $user->getAllPermissions()->pluck('name');
         
         return response()->json([
             'success' => true,
@@ -96,8 +88,8 @@ class LoginController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'roles' => $roles,
-                    'permissions' => $permissions
+                    //'roles' => $roles,
+                    //'permissions' => $permissions
                 ],
                 'access_token' => $token,
                 'token_type' => 'Bearer',
